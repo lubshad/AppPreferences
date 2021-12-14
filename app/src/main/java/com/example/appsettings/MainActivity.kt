@@ -9,26 +9,37 @@ import android.widget.Toast
 
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val sharedPreferenceChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, s ->
-            val nightmode =
-                sharedPreferences.getString(SettingsActivity.SettingsFragment.NIGHT_MODE_KEY, "1")
-            Log.e(SettingsActivity.SettingsFragment.TAG, nightmode.toString())
-        }
+    private lateinit var preferences: SharedPreferences
+
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        updateTheme()
+    }
 
-        val preferences = getPreferences(MODE_PRIVATE)
-
-        preferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
-
+    private fun updateTheme() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightmode =
+            sharedPreferences.getString(SettingsActivity.SettingsFragment.NIGHT_MODE_KEY, "1")
+        when (nightmode) {
+            "1" ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            "2" ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            "3" ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_settings -> {
                 navigateToSettingsActivity()
             }
