@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="1"
+        android:key="@string/night_mode_preference"
+        android:title="@string/night_mode_title"
+        android:summary="@string/night_mode_summery"
+        android:entries="@array/NightMode"
+        android:entryValues="@array/NightModeValues"
+        />
+</PreferenceScreen>
